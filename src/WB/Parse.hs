@@ -50,9 +50,12 @@ parseRecord = do
   char '|'
   o <- parseOb
   return $ Record u p t o
+<<<<<<< HEAD
 
 parseR :: Text -> Maybe Record
 parseR r =
   case (parseOnly parseRecord r) of
     Left _ -> Nothing
     Right a -> Just a
+=======
+>>>>>>> Added for records and converting of records to formatted text
