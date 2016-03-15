@@ -1,0 +1,15 @@
+module WB.Tests where
+
+import Control.Monad
+import Test.QuickCheck
+
+import WB.Types
+import WB.Parse
+
+prop_idempotent r = parseR $ printR r == r
+
+main :: IO ()
+main = quickcheck suite
+
+suite = do
+  quickCheck prop_idempotent

@@ -1,0 +1,36 @@
+{-# LANGUAGE OverloadedStrings #-}
+
+module WB.Parse where
+
+import Data.Text (Text)
+import Data.Attoparsec.Text
+import WB.Types
+
+parseUTC :: Parser UTCtime
+parseUTC = do
+  y <- decimal
+  char '-'
+  m <- decimal
+  char '-'
+  d <- decimal
+  char 'T'
+  h <- decimal
+  char ':'
+  mm <- decimal
+  return $ UTCtime y m d h mm
+
+parsePos :: Parser Position
+parsePos = do
+  x <- decimal
+  char ','
+  y <- decimal
+  return $ Position x y
+
+parseTemp :: Parser Temp
+parseTemp = do
+  t <- decimal
+  return $ Temp t
+
+parseOb :: Parser ObCode
+parseOb = do
+  

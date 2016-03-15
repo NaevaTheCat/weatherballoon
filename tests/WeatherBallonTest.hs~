@@ -1,0 +1,8 @@
+module WB.Tests where
+
+import Control.Monad
+import Test.QuickCheck
+
+import WB.Types
+import WB.Parser
+
