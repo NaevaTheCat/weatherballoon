@@ -92,3 +92,12 @@ instance Arbitrary Record where
               arbitrary <*>
               arbitrary <*>
               arbitrary
+              
+instance Arbitrary Text where
+  arbitrary = T.pack <$> listOf1 textChar where
+    textChar = elements . concat $ [ ['a'..'z']
+                                   , ['A'..'Z']
+                                   , ['0'..'9']
+                                   , [' '..'/']
+                                   ]
+
