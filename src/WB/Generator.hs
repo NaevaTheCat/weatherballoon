@@ -14,12 +14,10 @@ newtype TRecord = TRecord {
   textR :: Text
   }
                   
-
 class Variant a where
   valid :: Gen a
   invalid :: Gen a
-
-
+  
 instance Variant a => Arbitrary a where
   arbitrary = oneof [valid, invalid]
 
@@ -46,4 +44,3 @@ createTestSet (fname, ext, count, gen) = do
 
 writeToFile name_prefix suffix x = do
   TIO.appendFile (T.unpack $ T.intercalate "." [name_prefix, suffix]) (flip T.snoc '\n' $ textR x) 
-

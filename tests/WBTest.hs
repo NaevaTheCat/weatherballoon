@@ -4,7 +4,6 @@ import Test.QuickCheck
 import Data.Text (Text)
 import qualified Data.Text as T
 
-
 import WB.Types
 import WB.Parse
 
@@ -15,6 +14,3 @@ main :: IO ()
 main = do
   quickCheck prop_idempotent
   quickCheck prop_rejects
-  
-
-
