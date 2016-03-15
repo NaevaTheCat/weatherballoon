@@ -17,6 +17,7 @@ newtype TRecord = TRecord {
 class Variant a where
   valid :: Gen a
   invalid :: Gen a
+<<<<<<< HEAD
   
 instance Variant a => Arbitrary a where
   arbitrary = oneof [valid, invalid]
@@ -42,5 +43,31 @@ createTestSet (fname, ext, count, gen) = do
   testSet <- generate $ vectorOf count gen
   mapM_ (writeToFile fname ext) (testSet)
 
+=======
+
+--instance Variant a => Arbitrary a where
+--  arbitrary = oneof [valid, invalid]
+
+instance Variant TRecord where
+  valid = TRecord <$> printR <$> (arbitrary :: Gen Record)
+  invalid = TRecord <$> arbitrary
+
+instance Arbitrary TRecord where
+  arbitrary = oneof [valid,invalid]
+
+main = do
+  let num = 1000000
+  let config =
+        [ ("ALL_VALID", "txt", num, valid)
+        , ("RANDOM", "txt", num, arbitrary)
+        ]
+  mapM_ createTestSet config
+
+createTestSet :: (Text, Text, Int, Gen TRecord) -> IO ()
+createTestSet (fname, ext, count, gen) = do
+  testSet <- generate $ vectorOf count gen
+  mapM_ (writeToFile fname ext) (testSet)
+
+>>>>>>> Basic structure of data generator in. Very slow at this point
 writeToFile name_prefix suffix x = do
   TIO.appendFile (T.unpack $ T.intercalate "." [name_prefix, suffix]) (flip T.snoc '\n' $ textR x) 
