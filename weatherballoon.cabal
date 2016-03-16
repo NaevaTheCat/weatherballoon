@@ -17,9 +17,11 @@ cabal-version:       >=1.10
 executable weatherballoon
   main-is:             Main.hs
   hs-source-dirs:      src
+                       src/WB
   other-modules:       WB.Types
                        WB.Parse
                        WB.Generator
+  ghc-options:         -O2
   other-extensions:    OverloadedStrings
   build-depends:       base >=4.5 && <5
                      , attoparsec

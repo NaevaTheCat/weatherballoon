@@ -5,6 +5,7 @@ import Control.Monad
 import Test.QuickCheck
 
 import System.IO
+import System.Environment
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
@@ -17,11 +18,6 @@ newtype TRecord = TRecord {
 class Variant a where
   valid :: Gen a
   invalid :: Gen a
-<<<<<<< HEAD
-  
-instance Variant a => Arbitrary a where
-  arbitrary = oneof [valid, invalid]
-
 
 instance Variant TRecord where
   valid = TRecord <$> printR <$> (arbitrary :: Gen Record)
@@ -30,8 +26,9 @@ instance Variant TRecord where
 instance Arbitrary TRecord where
   arbitrary = oneof [valid,invalid]
 
-main = do
-  let num = 1000000
+gen = do
+--  args <- getArgs
+  num <- (read . head) <$> getArgs
   let config =
         [ ("ALL_VALID", "txt", num, valid)
         , ("RANDOM", "txt", num, arbitrary)
@@ -41,33 +38,7 @@ main = do
 createTestSet :: (Text, Text, Int, Gen TRecord) -> IO ()
 createTestSet (fname, ext, count, gen) = do
   testSet <- generate $ vectorOf count gen
-  mapM_ (writeToFile fname ext) (testSet)
+  h <- openFile (T.unpack $ T.intercalate "." [fname, ext]) WriteMode
+  mapM_ (writeToFile fname ext h) testSet
 
-=======
-
---instance Variant a => Arbitrary a where
---  arbitrary = oneof [valid, invalid]
-
-instance Variant TRecord where
-  valid = TRecord <$> printR <$> (arbitrary :: Gen Record)
-  invalid = TRecord <$> arbitrary
-
-instance Arbitrary TRecord where
-  arbitrary = oneof [valid,invalid]
-
-main = do
-  let num = 1000000
-  let config =
-        [ ("ALL_VALID", "txt", num, valid)
-        , ("RANDOM", "txt", num, arbitrary)
-        ]
-  mapM_ createTestSet config
-
-createTestSet :: (Text, Text, Int, Gen TRecord) -> IO ()
-createTestSet (fname, ext, count, gen) = do
-  testSet <- generate $ vectorOf count gen
-  mapM_ (writeToFile fname ext) (testSet)
-
->>>>>>> Basic structure of data generator in. Very slow at this point
-writeToFile name_prefix suffix x = do
-  TIO.appendFile (T.unpack $ T.intercalate "." [name_prefix, suffix]) (flip T.snoc '\n' $ textR x) 
+writeToFile name suffix h x = TIO.hPutStrLn h (textR x)
