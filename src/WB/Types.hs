@@ -61,6 +61,16 @@ tshow t = T.pack $ show t
 printR :: Record -> Text
 printR r = T.intercalate "|" [tshow $ time r, tshow $ pos r, tshow $ temp r, ob $ obs r]
 
+-- ordering
+-- stupid hack shift by powers of 10
+instance Ord UTCtime where
+  compare (a) (b) = compare (weighted a) (weighted b) where
+    weighted x = (minute x) + (10^2 * hour x)
+                 + (10^4 * day x) + (10^6 * month x)
+                 + (10^8 * year x)
+instance Ord Record where
+  compare a b = compare (time a) (time b)
+
 -- Arbitraries
 instance Arbitrary UTCtime where
   arbitrary = UTCtime <$> year <*> month <*> day
