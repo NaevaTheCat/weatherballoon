@@ -28,6 +28,7 @@ executable weatherballoon
                      , attoparsec
                      , text
                      , QuickCheck
+                     , directory
   default-language:    Haskell2010
 
 test-suite wb-test
@@ -43,3 +44,5 @@ test-suite wb-test
                   , QuickCheck
                   , text
                   , attoparsec
+                  , directory
+                  , transformers

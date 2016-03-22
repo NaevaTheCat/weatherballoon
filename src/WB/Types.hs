@@ -61,13 +61,18 @@ tshow t = T.pack $ show t
 printR :: Record -> Text
 printR r = T.intercalate "|" [tshow $ time r, tshow $ pos r, tshow $ temp r, ob $ obs r]
 
--- ordering
--- stupid hack shift by powers of 10
 instance Ord UTCtime where
-  compare (a) (b) = compare (weighted a) (weighted b) where
-    weighted x = (minute x) + (10^2 * hour x)
-                 + (10^4 * day x) + (10^6 * month x)
-                 + (10^8 * year x)
+  compare (UTCtime y m d h mm) (UTCtime y' m' d' h' mm') =
+    comparify [y,m,d,h,mm] [y',m',d',h',mm']
+
+-- purely a helper for avoiding stair stepping in UTC compare
+comparify :: [Int] -> [Int] -> Ordering
+comparify [] [] = EQ
+comparify (a:as) (b:bs) = case (compare a b) of
+  LT -> LT
+  GT -> GT
+  EQ -> comparify as bs
+
 instance Ord Record where
   compare a b = compare (time a) (time b)
 

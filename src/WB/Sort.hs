@@ -3,6 +3,7 @@ module WB.Sort where
 
 import System.IO
 import System.IO.Error
+import System.Directory
 
 import Data.Either 
 import Control.Monad
@@ -25,18 +26,19 @@ flipFlag :: Flag -> Flag
 flipFlag Odd = Even
 flipFlag Even = Odd
 
-mergeSort :: String -> IO String
-mergeSort file = do
-  let atOnce = 1000000
+mergeSort :: String -> Int -> Int -> IO String
+mergeSort file segmentSize mergeSize= do
   h <- openFile file ReadMode
-  reps <- segmentFile file 0 h atOnce
-  outName <- mergeAll file reps 0 atOnce 0 Even
-  return outName
-  -- while thing
+  reps <- segmentFile file 0 h segmentSize
+  outName <- mergeAll file reps 0 mergeSize 0 Even
+  renameFile outName ("Sorted_" ++ file)
+  cleanUp file reps
+  return $ "Sorted_" ++ file
 
---merge :: String -> Int -> Int -> Int -> IO a
+
+mergeAll :: String -> Int -> Int -> Int -> Int -> Flag -> IO String
 mergeAll file num pos n rep flag
-  | pos == num = return $ mergeName $ flipFlag flag
+  | (pos == num) && (rep > 0)= return $ mergeName $ flipFlag flag
   | rep > 0 = do
     let (hs', pos') = openNorLess file num pos n
     hs <- hs'
@@ -125,3 +127,6 @@ getNlines n h = let catch e = if isEOFError e then return $ Left "" else ioError
         pure $ t' : foo
       Left t' -> return []
   
+cleanUp :: String -> Int -> IO ()
+cleanUp file reps = mapM_ delete [0..reps] where
+  delete rep = removeFile $ "partialSort_" ++ (show rep ++ "_") ++ file

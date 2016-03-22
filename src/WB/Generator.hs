@@ -40,5 +40,6 @@ createTestSet (fname, ext, count, gen) = do
   testSet <- generate $ vectorOf count gen
   h <- openFile (T.unpack $ T.intercalate "." [fname, ext]) WriteMode
   mapM_ (writeToFile fname ext h) testSet
+  hClose h
 
 writeToFile name suffix h x = TIO.hPutStrLn h (textR x)
