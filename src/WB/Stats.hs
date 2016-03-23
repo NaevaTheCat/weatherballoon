@@ -44,7 +44,7 @@ auToSI r = Record (time r) newPos newTemp (obs r) where
 usToSI r = Record (time r) newPos newTemp (obs r) where
   newPos = Position (conv $ x $ pos r) (conv $ y $ pos r)
   conv x = round $ (fromIntegral x)/0.00062137
-  newTemp = Temp $ round $((fromIntegral $ t $ temp r) - 32 )/1.8 + 273
+  newTemp = Temp $ round $((fromIntegral $ t $ temp r) - 32 )/1.8 + 273.15
   
 otherToSI r = Record (time r) newPos (temp r) (obs r) where
   newPos = Position (conv $ x $ pos r) (conv $ y $ pos r)
