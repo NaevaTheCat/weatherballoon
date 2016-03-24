@@ -51,6 +51,8 @@ instance Show Position where
 instance Show Temp where
   show (Temp t) = show t
 
+instance Show ObCode where
+  show (ObCode c) = T.unpack c
 instance Show Record where
   show (Record u p t c) = show u ++ "|" ++
                           show p ++ "|" ++

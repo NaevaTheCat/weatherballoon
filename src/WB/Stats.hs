@@ -121,7 +121,7 @@ totalDist h p dist firstRun = do
     Nothing -> do
       hClose h
       return dist
-    Just r' -> totalDist h (pos r') newdist False where 
+    Just r' -> totalDist h (pos r') (dist + newdist) False where 
       newdist = calcDist p (pos r') 
 
 calcDist :: Position -> Position -> Double
@@ -138,7 +138,7 @@ converter fname (d,t) = do
   hClose w
   h' <- openFile "temp_conv" ReadMode
   w' <- openFile fname WriteMode
-  mapConv h w t
+  mapConv h' w' t
   hClose h'
   hClose w'
   removeFile "temp_conv"

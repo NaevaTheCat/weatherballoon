@@ -26,19 +26,16 @@ instance Variant TRecord where
 instance Arbitrary TRecord where
   arbitrary = oneof [valid,invalid]
 
-gen = do
---  args <- getArgs
-  num <- (read . head) <$> getArgs
+gen file num validOnly = do
+  let generator = if validOnly == True then valid else arbitrary
   let config =
-        [ ("ALL_VALID", "txt", num, valid)
-        , ("RANDOM", "txt", num, arbitrary)
-        ]
-  mapM_ createTestSet config
+        (file, "txt", num, generator)
+  createTestSet config
 
-createTestSet :: (Text, Text, Int, Gen TRecord) -> IO ()
+createTestSet :: (String, String, Int, Gen TRecord) -> IO ()
 createTestSet (fname, ext, count, gen) = do
   testSet <- generate $ vectorOf count gen
-  h <- openFile (T.unpack $ T.intercalate "." [fname, ext]) WriteMode
+  h <- openFile (fname ++ "." ++ ext) WriteMode
   mapM_ (writeToFile fname ext h) testSet
   hClose h
 
