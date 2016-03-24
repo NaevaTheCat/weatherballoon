@@ -91,7 +91,6 @@ main = do
   quickCheck prop_idempotent
   putStrLn "Parser rejects"
   quickCheck prop_rejects
-<<<<<<< HEAD
   putStrLn "au to si and back"
   quickCheck prop_auConvIdem
   putStrLn "us to si and back"
@@ -103,9 +102,4 @@ main = do
   putStrLn "Distance works both ways"
   quickCheck prop_AtoBBtoA
   putStrLn "Sort is stable"
-=======
-  quickCheck prop_auConvIdem
-  quickCheck prop_usConvIdem
-  quickCheck prop_meanStable
->>>>>>> Adding tests for stat module, have completed most features of stat module. Issues with rounding on the F -> K and back conversion
   quickCheck prop_sortIdempotent
