@@ -31,7 +31,9 @@ data Position = Position {
   y :: Int
   } deriving Eq
                 
-newtype Temp = Temp Int deriving Eq
+newtype Temp = Temp {
+  t :: Int
+  } deriving(Eq, Ord)
 
 newtype ObCode = ObCode {
   ob :: Text
