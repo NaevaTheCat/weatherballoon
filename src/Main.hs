@@ -94,22 +94,22 @@ doAnalysis target di de mi ma me td oc = do
   when mi $ do
     h <- openFile out ReadMode
     minT <- minTemp h (Temp 0) True
-    TIO.hPutStrLn w "Minimum Temperature (K):"
+    TIO.hPutStrLn w $ T.pack $ "Minimum Temperature " ++ de ++ ":"
     TIO.hPutStrLn w $ T.pack $ show minT
   when ma $ do
     h <- openFile out ReadMode
     maxT <- maxTemp h (Temp 0) True
-    TIO.hPutStrLn w "Maximum Temperature (K):"
+    TIO.hPutStrLn w $ T.pack $ "Maximum Temperature " ++ de ++ ":"
     TIO.hPutStrLn w $ T.pack $ show maxT
   when me $ do
     h <- openFile out ReadMode
     meanT <- meanTemp h 0 0
-    TIO.hPutStrLn w "Mean Temperature (K):"
+    TIO.hPutStrLn w $ T.pack $ "Mean Temperature " ++ de ++ ":"
     TIO.hPutStrLn w $ T.pack $ show meanT
   when td $ do
     h <- openFile out ReadMode
     totalD <- totalDist h (Position 0 0) 0 True
-    TIO.hPutStrLn w "Total Distance (m):"
+    TIO.hPutStrLn w $ T.pack $ "Total Distance " ++ di ++ ":"
     TIO.hPutStrLn w $ T.pack $ show totalD
   when oc $ do
     h <- openFile out ReadMode

@@ -3,7 +3,7 @@ Based off the ambiata interview challenge thing at https://github.com/ambiata/in
 
 # Capabilities
 - Generate valid and invalid data (or a mix!)
-- Produces all the statistics (Min T, Max T, Mean T, N obs, total D) although outputs are in SI only
+- Produces all the statistics (Min T, Max T, Mean T, N obs, total D) in the desired units
 - Outputs a sorted version of the input file in desired units
 
 # Usage

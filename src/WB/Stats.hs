@@ -55,15 +55,15 @@ maxTemp h _ True = do
   r <- safeRead h
   case r of
     Nothing -> undefined -- error here
-    Just r' -> maxTemp h (temp $ toSI r') False
+    Just r' -> maxTemp h (temp r') False
 maxTemp h t firstRun = do
   r <- safeRead h
   case r of
     Nothing -> do
       hClose h
       return t
-    Just r' -> case (compare t (temp $ toSI r')) of
-      LT -> maxTemp h (temp $ toSI r') False
+    Just r' -> case (compare t (temp r')) of
+      LT -> maxTemp h (temp r') False
       _ -> maxTemp h t False
       
 minTemp :: Handle -> Temp -> Bool -> IO Temp
@@ -71,15 +71,15 @@ minTemp h _ True = do
   r <- safeRead h
   case r of
     Nothing -> undefined -- error here
-    Just r' -> minTemp h (temp $ toSI r') False
+    Just r' -> minTemp h (temp r') False
 minTemp h t firstRun = do
   r <- safeRead h
   case r of
     Nothing -> do
       hClose h
       return t
-    Just r' -> case (compare t (temp $ toSI r')) of
-      GT -> minTemp h (temp $ toSI r') False
+    Just r' -> case (compare t (temp r')) of
+      GT -> minTemp h (temp r') False
       _ -> minTemp h t False
 
 -- Knuths stable mean in one pass
@@ -92,7 +92,7 @@ meanTemp h lastMean k = do
       return lastMean
     Just r' -> meanTemp h mean (k + 1) where
       mean = lastMean + (t_k - lastMean)/(k + 1)
-      t_k = fromIntegral $ t $ temp $ toSI r'
+      t_k = fromIntegral $ t $ temp r'
 
 countObs :: Handle -> [(ObCode, Int)] -> IO [(ObCode, Int)]
 countObs h seen = do
